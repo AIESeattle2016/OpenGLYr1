@@ -45,21 +45,6 @@ int main(int argc, char * argv[])
 
 	// # GAME LOGIC
 
-	// ## Triangle Data
-	const float vertexPositions[] =
-	{
-		1024 / 2.0, 720 / 2.0 + 10.0f, 0.0f, 1.0f,
-		1024 / 2.0 - 5.0f, 720 / 2.0 - 10.0f, 0.0f, 1.0f,	//@AIE - typo on this line! there was a duplicate "f"!
-		1024 / 2.0 + 5.0f, 720 / 2.0 - 10.0f, 0.0f, 1.0f,
-	};
-
-	const float vertexColours[] =
-	{
-		1.0f, 0.0f, 0.0f, 1.0f,
-		0.0f, 1.0f, 0.0f, 1.0f,
-		0.0f, 0.0f, 1.0f, 1.0f,
-	};
-
 	// ## Triangle Shaders
 	GLuint uiProgramFlat = CreateProgram("resources/shaders/VertexShader.glsl", "resources/shaders/FlatFragmentShader.glsl");
 
@@ -153,6 +138,7 @@ int main(int argc, char * argv[])
 	// # PROGRAM SHUTDOWN
 
 	glDeleteBuffers(1, &uiVBO);	//@AIE: please clean up VBO
+	delete myShape;
 
 	glfwTerminate();
 	return 0;
