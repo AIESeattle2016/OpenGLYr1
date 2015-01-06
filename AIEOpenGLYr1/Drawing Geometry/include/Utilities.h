@@ -17,6 +17,12 @@
 
 #include <GL\glew.h>
 
+struct Vertex
+{
+	float fPositions[4];
+	float fColours[4];
+};
+
 GLuint CreateShader(GLenum a_eShaderType, const char *a_strShaderFile);
 GLuint CreateProgram(const char *a_vertex, const char *a_frag);
 
