@@ -6,10 +6,14 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#include <GLFW\glfw3.h>
+#include <GL\glew.h>	// GLEW
+#include <GL\wglew.h>	// this isn't actually needed yet
+
+#include <GLFW\glfw3.h>	// GLFW
 
 int main(int argc, char * argv[])
 {
+	// # WINDOW CREATION
 	// Initialize GLFW
 	if (!glfwInit())
 	{
@@ -31,6 +35,14 @@ int main(int argc, char * argv[])
 	// Make the window's context current
 	glfwMakeContextCurrent(window);
 
+	if (glewInit() != GLEW_OK)
+	{
+		glfwTerminate();
+		return -1;
+	}
+
+	// # GAME LOGIC
+
 	// loop until window is closed
 	while (!glfwWindowShouldClose(window))
 	{
@@ -41,7 +53,14 @@ int main(int argc, char * argv[])
 
 		// poll for and process events
 		glfwPollEvents();
+
+		if (glfwGetKey(window,GLFW_KEY_ESCAPE))
+		{
+			break;
+		}
 	}
+
+	// # PROGRAM SHUTDOWN
 
 	glfwTerminate();
 	return 0;

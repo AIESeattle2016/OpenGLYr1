@@ -40,12 +40,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)libs\glew-1.11.0\include;$(SolutionDir)libs\glfw-3.0.4.bin.WIN32\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)libs\glew-1.11.0\include;$(SolutionDir)libs\glfw-3.0.4.bin.WIN32\include;$(ProjectDir)include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)libs\glew-1.11.0\lib\Release\Win32;$(SolutionDir)libs\glfw-3.0.4.bin.WIN32\lib-msvc120;$(LibraryPath)</LibraryPath>
+    <SourcePath>$(ProjectDir)source;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)libs\glew-1.11.0\include;$(SolutionDir)libs\glfw-3.0.4.bin.WIN32\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)libs\glew-1.11.0\include;$(SolutionDir)libs\glfw-3.0.4.bin.WIN32\include;$(ProjectDir)include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)libs\glew-1.11.0\lib\Release\Win32;$(SolutionDir)libs\glfw-3.0.4.bin.WIN32\lib-msvc120;$(LibraryPath)</LibraryPath>
+    <SourcePath>$(ProjectDir)source;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -77,6 +79,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="source\Utilities.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\shaders\FlatFragmentShader.glsl" />
+    <None Include="resources\shaders\TexturedFragmentShader.glsl" />
+    <None Include="resources\shaders\VertexShader.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
