@@ -26,6 +26,8 @@
     <None Include="resources\shaders\VertexShader.glsl" />
     <None Include="resources\shaders\FlatFragmentShader.glsl" />
     <None Include="resources\shaders\TexturedFragmentShader.glsl" />
+    <None Include="resources\shaders\VertexPoint.glsl" />
+    <None Include="resources\shaders\FragmentPoint.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Utilities.h">

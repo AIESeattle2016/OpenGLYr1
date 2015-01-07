@@ -6,12 +6,19 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
+#include <time.h>		// time
+
 #include <GL\glew.h>	// GLEW
 #include <GL\wglew.h>	// this isn't actually needed yet
 
 #include <GLFW\glfw3.h>	// GLFW
 
 #include <Utilities.h>	// CreateProgram...
+
+void stampStar(Vertex * starVertex)
+{
+
+}
 
 int main(int argc, char * argv[])
 {
@@ -52,6 +59,8 @@ int main(int argc, char * argv[])
 
 	float * orthographicProjection = getOrtho(0, 1024, 0, 720, 0, 100);
 
+
+	// ## DEFINE TRIANGLE DATA
 	Vertex * myShape = new Vertex[3];
 	
 	// define XY position of each shape
@@ -88,6 +97,35 @@ int main(int argc, char * argv[])
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
+	// ## DEFINE STAR DATA
+	GLuint uiStarProg = CreateProgram("resources/shaders/VertexPoint.glsl", "resources/shaders/FragmentPoint.glsl");
+
+	Vertex * myStarVert = new Vertex;
+	myStarVert->fPositions[2] = 0.0f;
+	myStarVert->fPositions[3] = 1.0f;
+	myStarVert->fColours[0] = 1.0f;
+	myStarVert->fColours[1] = 1.0f;
+	myStarVert->fColours[2] = 1.0f;
+	myStarVert->fColours[3] = 1.0f;
+
+	float myStarPos[40];
+
+	srand(time(NULL));
+	for (int i = 0; i < 40; i+=2)
+	{
+		myStarPos[i] = rand() % 1024;
+	}
+	for (int i = 1; i < 40; i+= 2)
+	{
+		myStarPos[i] = rand() % 720;
+	}
+
+	GLuint uiStarVBO;
+	glGenBuffers(1, &uiStarVBO);
+
+	
+	// ## MAIN GAME LOOP
+
 	// loop until window is closed
 	while (!glfwWindowShouldClose(window))
 	{
@@ -96,32 +134,79 @@ int main(int argc, char * argv[])
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);	// color of empty pixel
 		glClear(GL_COLOR_BUFFER_BIT);			// clear using the specified method
 
-		
-		//enable shaders
-		glUseProgram(uiProgramFlat);	// bind program	//@AIE: why did the variable name change?
+		// Star Drawing
+		{
+			for (int i = 0; i < 40; i += 2)
+			{
+				if (uiStarVBO != NULL)
+				{
+					myStarVert->fPositions[0] = myStarPos[i];
+					myStarVert->fPositions[1] = myStarPos[i + 1];
 
-		//send our orthographic projection info to the shader
-		glUniformMatrix4fv(MatrixIDFlat, 1, GL_FALSE, orthographicProjection);
+					//bind VBO
+					glBindBuffer(GL_ARRAY_BUFFER, uiStarVBO);
 
-		//enable the vertex array state, since we're sending in an array of vertices
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
+					glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex), NULL, GL_STATIC_DRAW);	//allocate space for vertices on the graphics card		
+					GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);	//get pointer to allocated space on the graphics card
+					memcpy(vBuffer, myStarVert, sizeof(Vertex));	//copy data to graphics card
+					glUnmapBuffer(GL_ARRAY_BUFFER);	//unmap and unbind buffer
 
-		glBindBuffer(GL_ARRAY_BUFFER, uiVBO);	// Bind VBO
+					glBindBuffer(GL_ARRAY_BUFFER, 0);
+				}
 
-		/*Since the data is in the same array, we need to specify the gap between
-		vertices (A whole Vertex structure instance) and the offset of the data
-		from the beginning of the structure instance. The positions are at the
-		start, so their offset is 0. But the colours are after the positions, so
-		they are offset by the size of the position data */
-		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float)* 4));
+				//enable shaders
+				glUseProgram(uiStarProg);	// bind program	//@AIE: why did the variable name change?
 
-		//draw to the screen
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+				//send our orthographic projection info to the shader
+				glUniformMatrix4fv(MatrixIDFlat, 1, GL_FALSE, orthographicProjection);
 
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		
+				//enable the vertex array state, since we're sending in an array of vertices
+				glEnableVertexAttribArray(0);
+				glEnableVertexAttribArray(1);
+
+				glBindBuffer(GL_ARRAY_BUFFER, uiStarVBO);	// Bind VBO
+
+				glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+				glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float)* 4));
+
+				//draw to the screen
+				glDrawArrays(GL_POINTS, 0, 1);
+			}
+			
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+			glUseProgram(0);
+		}
+
+		// Triangle Drawing
+		{
+			//enable shaders
+			glUseProgram(uiProgramFlat);	// bind program	//@AIE: why did the variable name change?
+
+			//send our orthographic projection info to the shader
+			glUniformMatrix4fv(MatrixIDFlat, 1, GL_FALSE, orthographicProjection);
+
+			//enable the vertex array state, since we're sending in an array of vertices
+			glEnableVertexAttribArray(0);
+			glEnableVertexAttribArray(1);
+
+			glBindBuffer(GL_ARRAY_BUFFER, uiVBO);	// Bind VBO
+
+			/*Since the data is in the same array, we need to specify the gap between
+			vertices (A whole Vertex structure instance) and the offset of the data
+			from the beginning of the structure instance. The positions are at the
+			start, so their offset is 0. But the colours are after the positions, so
+			they are offset by the size of the position data */
+			glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float)* 4));
+
+			//draw to the screen
+			glDrawArrays(GL_TRIANGLES, 0, 3);
+
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+			glUseProgram(0);
+		}
 
 		// swap front and back buffers
 		glfwSwapBuffers(window);
