@@ -40,7 +40,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)libs\glew-1.11.0\include;$(SolutionDir)libs\glfw-3.0.4.bin.WIN32\include;$(ProjectDir)include;$(SolutionDir)lib\soil\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)libs\glew-1.11.0\include;$(SolutionDir)libs\glfw-3.0.4.bin.WIN32\include;$(ProjectDir)include;$(SolutionDir)libs\soil\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)libs\glew-1.11.0\lib\Release\Win32;$(SolutionDir)libs\glfw-3.0.4.bin.WIN32\lib-msvc120;$(SolutionDir)$(Configuration);$(LibraryPath)</LibraryPath>
     <SourcePath>$(ProjectDir)source;$(SourcePath)</SourcePath>
   </PropertyGroup>
