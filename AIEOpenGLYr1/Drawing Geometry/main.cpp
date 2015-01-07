@@ -97,6 +97,28 @@ int main(int argc, char * argv[])
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
+	GLuint uiIBO;
+	glGenBuffers(1, &uiIBO);
+
+	if (uiIBO != NULL)
+	{
+		//bind IBO
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBO);
+		//allocate space for index info on the graphics card
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 3 * sizeof(char), NULL, GL_STATIC_DRAW);
+		//get pointer to newly allocated space on the graphics card
+		GLvoid* iBuffer = glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY);
+		//specify the order we'd like to draw our vertices.
+		//In this case they are in sequential order
+		for (int i = 0; i < 3; i++)
+		{
+			((char*)iBuffer)[i] = i;
+		}
+		//unmap and unbind
+		glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	}
+
 	// ## DEFINE STAR DATA
 	GLuint uiStarProg = CreateProgram("resources/shaders/VertexPoint.glsl", "resources/shaders/FragmentPoint.glsl");
 
@@ -186,11 +208,12 @@ int main(int argc, char * argv[])
 			//send our orthographic projection info to the shader
 			glUniformMatrix4fv(MatrixIDFlat, 1, GL_FALSE, orthographicProjection);
 
+			glBindBuffer(GL_ARRAY_BUFFER, uiVBO);	// Bind VBO
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBO); // Bind IBO
+
 			//enable the vertex array state, since we're sending in an array of vertices
 			glEnableVertexAttribArray(0);
 			glEnableVertexAttribArray(1);
-
-			glBindBuffer(GL_ARRAY_BUFFER, uiVBO);	// Bind VBO
 
 			/*Since the data is in the same array, we need to specify the gap between
 			vertices (A whole Vertex structure instance) and the offset of the data
@@ -201,7 +224,7 @@ int main(int argc, char * argv[])
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(float)* 4));
 
 			//draw to the screen
-			glDrawArrays(GL_TRIANGLES, 0, 3);
+			glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_BYTE, NULL);
 
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -223,7 +246,9 @@ int main(int argc, char * argv[])
 	// # PROGRAM SHUTDOWN
 
 	glDeleteBuffers(1, &uiVBO);	//@AIE: please clean up VBO
+	glDeleteBuffers(1, &uiIBO); 
 	delete myShape;
+	
 
 	glfwTerminate();
 	return 0;
