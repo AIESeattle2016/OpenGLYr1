@@ -14,6 +14,7 @@
 #include <GLFW\glfw3.h>	// GLFW
 
 #include <Utilities.h>	// CreateProgram...
+#include <Timer.h>		// Timer...
 
 void stampStar(Vertex * starVertex)
 {
@@ -49,6 +50,8 @@ int main(int argc, char * argv[])
 		glfwTerminate();
 		return -1;
 	}
+
+	Timer timer;
 
 	// # GAME LOGIC
 
@@ -155,6 +158,7 @@ int main(int argc, char * argv[])
 	// loop until window is closed
 	while (!glfwWindowShouldClose(window))
 	{
+		timer.Update();
 		// Draw code goes here
 
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);	// color of empty pixel
