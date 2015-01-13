@@ -15,6 +15,10 @@
 
 #include <GLFW\glfw3.h>	// GLFW
 
+#include <glm\glm.hpp>
+#include <glm\mat4x4.hpp>
+#include <glm\ext.hpp>
+
 #include <Utilities.h>	// CreateProgram...
 #include <Timer.h>		// Timer...
 
@@ -58,7 +62,7 @@ int main(int argc, char * argv[])
 
 	GLuint MatrixIDFlat = glGetUniformLocation(uiProgramFlat, "MVP");	// get handle to MVP uniform in shader
 
-	float * orthographicProjection = getOrtho(0, 1024, 0, 720, 0, 100);
+	glm::mat4  orthographicProjection = getOrtho(0, 1024, 0, 720, 0, 100);
 
 
 	// ## DEFINE TRIANGLE DATA
@@ -67,8 +71,10 @@ int main(int argc, char * argv[])
 	// define XY position of each shape
 	myShape[0].fPositions[0] = 1024 / 2.0;
 	myShape[0].fPositions[1] = 720 / 2.0 + 10.0f;
+
 	myShape[1].fPositions[0] = 1024 / 2.0 - 5.0f;
 	myShape[1].fPositions[1] = 720 / 2.0 - 10.0f;
+
 	myShape[2].fPositions[0] = 1024 / 2.0 + 5.0f;
 	myShape[2].fPositions[1] = 720 / 2.0 - 10.0f;
 
@@ -127,6 +133,8 @@ int main(int argc, char * argv[])
 	GLuint uiStarProg = CreateProgram("resources/shaders/VertexPoint.glsl", "resources/shaders/FragmentPoint.glsl");
 
 	Vertex * myStarVert = new Vertex;
+	myStarVert->fPositions[0] = 1024 / 2;
+	myStarVert->fPositions[1] = 720 / 2;
 	myStarVert->fPositions[2] = 0.0f;
 	myStarVert->fPositions[3] = 1.0f;
 	myStarVert->fColours[0] = 1.0f;
@@ -136,19 +144,27 @@ int main(int argc, char * argv[])
 
 	float myStarPos[40];
 
+	glm::vec2 v2myStarPos[20];
 	srand(time(NULL));
-	for (int i = 0; i < 40; i+=2)
+	for (int i = 0; i < 20; i++)
 	{
-		myStarPos[i] = rand() % 1024;
-	}
-	for (int i = 1; i < 40; i+= 2)
-	{
-		myStarPos[i] = rand() % 720;
+		v2myStarPos[i].x = rand() % 1024;
+		v2myStarPos[i].y = rand() % 720;
 	}
 
 	GLuint uiStarVBO;
 	glGenBuffers(1, &uiStarVBO);
 
+	if (uiStarVBO != NULL)
+	{
+		//bind VBO
+		glBindBuffer(GL_ARRAY_BUFFER, uiStarVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex), NULL, GL_STATIC_DRAW); //allocate space for vertices on the graphics card
+		GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY); //get pointer to allocated space on the graphics card
+		memcpy(vBuffer, myStarVert, sizeof(Vertex)); //copy data to graphics card
+		glUnmapBuffer(GL_ARRAY_BUFFER); //unmap and unbind buffer
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
 	
 	// ## MAIN GAME LOOP
 
@@ -163,29 +179,19 @@ int main(int argc, char * argv[])
 
 		// Star Drawing
 		{
-			for (int i = 0; i < 40; i += 2)
+			for (int i = 0; i < 20; ++i)
 			{
-				if (uiStarVBO != NULL)
-				{
-					myStarVert->fPositions[0] = myStarPos[i];
-					myStarVert->fPositions[1] = myStarPos[i + 1];
+				
+				glm::mat4 model = glm::translate(glm::vec3(0.1f, 0, 0));
+				glm::mat4 MVP =  model * orthographicProjection;
 
-					//bind VBO
-					glBindBuffer(GL_ARRAY_BUFFER, uiStarVBO);
-
-					glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex), NULL, GL_STATIC_DRAW);	//allocate space for vertices on the graphics card		
-					GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);	//get pointer to allocated space on the graphics card
-					memcpy(vBuffer, myStarVert, sizeof(Vertex));	//copy data to graphics card
-					glUnmapBuffer(GL_ARRAY_BUFFER);	//unmap and unbind buffer
-
-					glBindBuffer(GL_ARRAY_BUFFER, 0);
-				}
-
+				//std::cout << glm::to_string(orthographicProjection * glm::vec4(1024 / 2, 720 / 2, 0, 1)) << "\n";
+				
 				//enable shaders
 				glUseProgram(uiStarProg);	// bind program	//@AIE: why did the variable name change?
 
 				//send our orthographic projection info to the shader
-				glUniformMatrix4fv(MatrixIDFlat, 1, GL_FALSE, orthographicProjection);
+				glUniformMatrix4fv(MatrixIDFlat, 1, GL_FALSE, glm::value_ptr(MVP));
 
 				//enable the vertex array state, since we're sending in an array of vertices
 				glEnableVertexAttribArray(0);
@@ -210,8 +216,13 @@ int main(int argc, char * argv[])
 			//enable shaders
 			glUseProgram(uiProgramTextured);	// bind program	//@AIE: why did the variable name change?
 
+			glm::mat4 model = glm::translate(glm::vec3(0, 0, 0));
+			glm::mat4 MVP = model * orthographicProjection;
+
+			std::cout << glm::to_string(orthographicProjection * glm::vec4(myShape[0].fPositions[0], myShape[0].fPositions[1], 0, 1)) << "\n";
+
 			//send our orthographic projection info to the shader
-			glUniformMatrix4fv(MatrixIDFlat, 1, GL_FALSE, orthographicProjection);
+			glUniformMatrix4fv(MatrixIDFlat, 1, GL_FALSE, glm::value_ptr(MVP));
 
 			glBindBuffer(GL_ARRAY_BUFFER, uiVBO);	// Bind VBO
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, uiIBO); // Bind IBO
@@ -320,7 +331,7 @@ int main(int argc, char * argv[])
 			break;
 		}
 
-		std::cout << timer.deltaTime() << "\n";
+		//std::cout << timer.deltaTime() << "\n";
 	}
 
 	// # PROGRAM SHUTDOWN
