@@ -14,24 +14,19 @@
 
 double Timer::totalTime()
 {
-#if _DEBUG
-	double total = glfwGetTime();
-	assert(total != 0.0);
-	return total;
-#endif
-
 	return glfwGetTime();
 }
 
 void Timer::Update()
 {
-	m_prevTime = totalTime();
+	m_prevTime = m_curTime;
+	m_curTime = totalTime();
 }
 
 double Timer::deltaTime()
 {
 	// time since last update
-	return totalTime() - m_prevTime;
+	return m_curTime - m_prevTime;
 }
 
 void Timer::totalTime(double a_newTime)

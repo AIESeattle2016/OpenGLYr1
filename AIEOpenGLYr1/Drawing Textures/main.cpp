@@ -8,6 +8,8 @@
 
 #include <time.h>		// time
 
+#include <iostream>
+
 #include <GL\glew.h>	// GLEW
 #include <GL\wglew.h>	// this isn't actually needed yet
 
@@ -15,11 +17,6 @@
 
 #include <Utilities.h>	// CreateProgram...
 #include <Timer.h>		// Timer...
-
-void stampStar(Vertex * starVertex)
-{
-
-}
 
 int main(int argc, char * argv[])
 {
@@ -256,7 +253,7 @@ int main(int argc, char * argv[])
 			//move forward
 			for (int i = 0; i < 3; i++)
 			{
-				myShape[i].fPositions[1] += 1.f;
+				myShape[i].fPositions[1] += 100.f * timer.deltaTime();
 			}
 			glBindBuffer(GL_ARRAY_BUFFER, uiVBO);
 			GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
@@ -271,7 +268,7 @@ int main(int argc, char * argv[])
 			//move forward
 			for (int i = 0; i < 3; i++)
 			{
-				myShape[i].fPositions[1] -= 1.f;
+				myShape[i].fPositions[1] -= 100.f * timer.deltaTime();
 			}
 			glBindBuffer(GL_ARRAY_BUFFER, uiVBO);
 			GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
@@ -286,7 +283,7 @@ int main(int argc, char * argv[])
 			//move forward
 			for (int i = 0; i < 3; i++)
 			{
-				myShape[i].fPositions[0] -= 1.f;
+				myShape[i].fPositions[0] -= 100.f * timer.deltaTime();
 			}
 			glBindBuffer(GL_ARRAY_BUFFER, uiVBO);
 			GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
@@ -301,7 +298,7 @@ int main(int argc, char * argv[])
 			//move forward
 			for (int i = 0; i < 3; i++)
 			{
-				myShape[i].fPositions[0] += 1.f;
+				myShape[i].fPositions[0] += 100.f * timer.deltaTime();
 			}
 			glBindBuffer(GL_ARRAY_BUFFER, uiVBO);
 			GLvoid* vBuffer = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
@@ -322,6 +319,8 @@ int main(int argc, char * argv[])
 		{
 			break;
 		}
+
+		std::cout << timer.deltaTime() << "\n";
 	}
 
 	// # PROGRAM SHUTDOWN

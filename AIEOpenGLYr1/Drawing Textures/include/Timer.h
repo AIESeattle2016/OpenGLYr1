@@ -19,7 +19,8 @@ public:
 
 	void Update();
 private:
-	double m_prevTime;
+	double m_prevTime = 0.0f;
+	double m_curTime = 0.0f;
 };
 
 #endif
