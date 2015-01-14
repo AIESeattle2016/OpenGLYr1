@@ -15,6 +15,7 @@
 #include <string>
 #include <fstream>
 
+#include <glm\vec2.hpp>
 #include <glm\mat4x4.hpp>
 
 #include <GL\glew.h>
@@ -34,5 +35,7 @@ GLuint CreateProgram(const char *a_vertex, const char *a_frag);
 mat4 getOrtho(float left, float right, float bottom, float top, float a_fNear, float a_fFar);
 
 unsigned int loadTexture(const char* a_pFilename, int & a_iWidth, int & a_iHeight, int & a_iBPP);
+
+glm::vec2 pixelToScreen(glm::vec2 pixels, glm::vec2 screenResolution);
 
 #endif

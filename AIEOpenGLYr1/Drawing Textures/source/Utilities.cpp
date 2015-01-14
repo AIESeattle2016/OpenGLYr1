@@ -10,6 +10,8 @@
 
 #include <iostream>
 
+#include <glm\glm.hpp>
+#include <glm\vec2.hpp>
 #include <glm\ext.hpp>
 
 #include <soil.h>
@@ -139,4 +141,12 @@ unsigned int loadTexture(const char* a_pFilename, int & a_iWidth, int & a_iHeigh
 		}
 		return uiTextureID;
 	}
+}
+
+glm::vec2 pixelToScreen(glm::vec2 pixels, glm::vec2 screenResolution)
+{
+	glm::mat4 viewProjection = glm::ortho(0.f, screenResolution[0], 0.f, screenResolution[1]);
+	glm::vec4 derivedPosition = viewProjection * glm::vec4(pixels, 0.0f, 1.0f);
+	
+	return glm::vec2(derivedPosition[0], derivedPosition[1]);
 }

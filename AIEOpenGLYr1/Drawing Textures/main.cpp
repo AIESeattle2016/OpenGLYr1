@@ -144,12 +144,12 @@ int main(int argc, char * argv[])
 
 	float myStarPos[40];
 
-	glm::vec2 v2myStarPos[20];
+	glm::vec2 v2myStarPos[40];
 	srand(time(NULL));
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < 40; i++)
 	{
-		v2myStarPos[i].x = rand() % 1024;
-		v2myStarPos[i].y = rand() % 720;
+		v2myStarPos[i][0] = rand() % 1024;
+		v2myStarPos[i][1] = rand() % 720;
 	}
 
 	GLuint uiStarVBO;
@@ -177,18 +177,16 @@ int main(int argc, char * argv[])
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);	// color of empty pixel
 		glClear(GL_COLOR_BUFFER_BIT);			// clear using the specified method
 
-		// Star Drawing
+		// Star Drawing - has a memory leak :(
 		{
-			for (int i = 0; i < 20; ++i)
-			{
-				
-				glm::mat4 model = glm::translate(glm::vec3(0.1f, 0, 0));
-				glm::mat4 MVP =  model * orthographicProjection;
+			//enable shaders
+			glUseProgram(uiStarProg);	// bind program	//@AIE: why did the variable name change?
 
-				//std::cout << glm::to_string(orthographicProjection * glm::vec4(1024 / 2, 720 / 2, 0, 1)) << "\n";
-				
-				//enable shaders
-				glUseProgram(uiStarProg);	// bind program	//@AIE: why did the variable name change?
+			for (int i = 0; i < 40; ++i)
+			{
+				glm::vec2 res = pixelToScreen(glm::vec2(v2myStarPos[i][0], v2myStarPos[i][1]), glm::vec2(1024, 720));
+				glm::mat4 model = glm::translate(glm::vec3(res, 0));
+				glm::mat4 MVP =  model * orthographicProjection;
 
 				//send our orthographic projection info to the shader
 				glUniformMatrix4fv(MatrixIDFlat, 1, GL_FALSE, glm::value_ptr(MVP));
@@ -207,7 +205,6 @@ int main(int argc, char * argv[])
 			}
 			
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
-
 			glUseProgram(0);
 		}
 
