@@ -3,16 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AIEOpenGLYr1", "AIEOpenGLYr1\AIEOpenGLYr1.vcxproj", "{C395A8CD-4DF6-4A89-AF2C-3A0FBBFC4F43}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "1 - Drawing Geometry", "Drawing Geometry\Drawing Geometry.vcxproj", "{223A1CC7-B8AE-4928-8404-A22388114889}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "2 - Drawing Textures", "Drawing Textures\Drawing Textures.vcxproj", "{4CE50D8C-B1FA-48AC-844B-63A6CC94CA6D}"
-	ProjectSection(ProjectDependencies) = postProject
-		{C32FB2B4-500C-43CD-A099-EECCE079D3F1} = {C32FB2B4-500C-43CD-A099-EECCE079D3F1}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SOIL", "libs\soil\projects\VC12\SOIL.vcxproj", "{C32FB2B4-500C-43CD-A099-EECCE079D3F1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AIE Engine", "AIEEngine\AIEEngine.vcxproj", "{4CE50D8C-B1FA-48AC-844B-63A6CC94CA6D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,24 +15,6 @@ Global
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C395A8CD-4DF6-4A89-AF2C-3A0FBBFC4F43}.Debug|Win32.ActiveCfg = Debug|Win32
-		{C395A8CD-4DF6-4A89-AF2C-3A0FBBFC4F43}.Debug|Win32.Build.0 = Debug|Win32
-		{C395A8CD-4DF6-4A89-AF2C-3A0FBBFC4F43}.Debug|x64.ActiveCfg = Debug|Win32
-		{C395A8CD-4DF6-4A89-AF2C-3A0FBBFC4F43}.Release|Win32.ActiveCfg = Release|Win32
-		{C395A8CD-4DF6-4A89-AF2C-3A0FBBFC4F43}.Release|Win32.Build.0 = Release|Win32
-		{C395A8CD-4DF6-4A89-AF2C-3A0FBBFC4F43}.Release|x64.ActiveCfg = Release|Win32
-		{223A1CC7-B8AE-4928-8404-A22388114889}.Debug|Win32.ActiveCfg = Debug|Win32
-		{223A1CC7-B8AE-4928-8404-A22388114889}.Debug|Win32.Build.0 = Debug|Win32
-		{223A1CC7-B8AE-4928-8404-A22388114889}.Debug|x64.ActiveCfg = Debug|Win32
-		{223A1CC7-B8AE-4928-8404-A22388114889}.Release|Win32.ActiveCfg = Release|Win32
-		{223A1CC7-B8AE-4928-8404-A22388114889}.Release|Win32.Build.0 = Release|Win32
-		{223A1CC7-B8AE-4928-8404-A22388114889}.Release|x64.ActiveCfg = Release|Win32
-		{4CE50D8C-B1FA-48AC-844B-63A6CC94CA6D}.Debug|Win32.ActiveCfg = Debug|Win32
-		{4CE50D8C-B1FA-48AC-844B-63A6CC94CA6D}.Debug|Win32.Build.0 = Debug|Win32
-		{4CE50D8C-B1FA-48AC-844B-63A6CC94CA6D}.Debug|x64.ActiveCfg = Debug|Win32
-		{4CE50D8C-B1FA-48AC-844B-63A6CC94CA6D}.Release|Win32.ActiveCfg = Release|Win32
-		{4CE50D8C-B1FA-48AC-844B-63A6CC94CA6D}.Release|Win32.Build.0 = Release|Win32
-		{4CE50D8C-B1FA-48AC-844B-63A6CC94CA6D}.Release|x64.ActiveCfg = Release|Win32
 		{C32FB2B4-500C-43CD-A099-EECCE079D3F1}.Debug|Win32.ActiveCfg = Debug|Win32
 		{C32FB2B4-500C-43CD-A099-EECCE079D3F1}.Debug|Win32.Build.0 = Debug|Win32
 		{C32FB2B4-500C-43CD-A099-EECCE079D3F1}.Debug|x64.ActiveCfg = Debug|x64
@@ -48,6 +23,12 @@ Global
 		{C32FB2B4-500C-43CD-A099-EECCE079D3F1}.Release|Win32.Build.0 = Release|Win32
 		{C32FB2B4-500C-43CD-A099-EECCE079D3F1}.Release|x64.ActiveCfg = Release|x64
 		{C32FB2B4-500C-43CD-A099-EECCE079D3F1}.Release|x64.Build.0 = Release|x64
+		{4CE50D8C-B1FA-48AC-844B-63A6CC94CA6D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4CE50D8C-B1FA-48AC-844B-63A6CC94CA6D}.Debug|Win32.Build.0 = Debug|Win32
+		{4CE50D8C-B1FA-48AC-844B-63A6CC94CA6D}.Debug|x64.ActiveCfg = Debug|Win32
+		{4CE50D8C-B1FA-48AC-844B-63A6CC94CA6D}.Release|Win32.ActiveCfg = Release|Win32
+		{4CE50D8C-B1FA-48AC-844B-63A6CC94CA6D}.Release|Win32.Build.0 = Release|Win32
+		{4CE50D8C-B1FA-48AC-844B-63A6CC94CA6D}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
